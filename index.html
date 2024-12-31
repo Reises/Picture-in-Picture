@@ -3,116 +3,20 @@
 <head>
     <meta charset="utf-8">
   <title>Picture-in-Picture Digital Time</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      width: 200vh;
-      margin: 0;
-    }
-
-    body #pip {
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
-
-    body #pipBtn {
-      display: block;
-    }
-  </style>
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
     <div id="container">
         <div id="pip">
             <!-- ピクチャーインピクチャーに適用-->
-            <style>
-                #pip {
-                    text-align: center;
-                    padding: 2rem;
-                    position: relative;
-                    background-color: #0e0101;
-                }
-                #pipBtn {
-                    position: absolute;
-                    top: 8px;
-                    right: 8px;
-                    margin: 0;
-                    padding: 8px;
-                      background-color: inherit;
-                      color: #666666;
-                     border: none;
-                    border-radius: 4px;
-                    cursor: pointer;
-                    display: none;
-                }
-                #clock {
-                    font-family: 'Share Tech Mono', monospace;
-                    color: #daf6ff;
-                    text-shadow: 0 0 20px #0aafe6;
-                    line-height: 1.2;
-                    text-align: center;
-                    font-size: 3.5rem;
-                    font-weight: bold;
-                    margin: 1rem 0;
-                    font-family: monospace;
-                }
-            </style>
+            <link rel="stylesheet" href="css/pipStyle.css">
             <button id="pipBtn">
                 <!-- ピクチャーインピクチャーのアイコン -->
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 18 L4 18 L4 6 L20 6 L20 8"></path><rect x="12" y="12" width="10" height="8"></rect></svg>
             </button>  
             <div id="clock"></div>
         </div>
-
-        <script>
-            const pipBtn = document.getElementById('pipBtn');
-            const clock = document.querySelector("#clock");  //  displayTime関数内でclock要素取得すると、関数内でしかclock要素を取得していないからピクチャーインピクチャーで表示したとき動かない
-            function displayTime() {
-                //  00:00:00表記
-                const padZero = value => value.toString().padStart(2, '0');
-                const now = new Date();
-                const hour = padZero(now.getHours());
-                const minute = padZero(now.getMinutes());
-                const second = padZero(now.getSeconds());
-
-                //  現在時刻を文字列にして、ブラウザに表示
-                clock.textContent = `${hour}:${minute}:${second}`;
-            }
-            displayTime();
-            setInterval(displayTime, 1000);
-            
-            pipBtn.addEventListener("click", async function () {
-                // Document Picture-in-Picture API がサポートされているか確認
-                if (!("documentPictureInPicture" in window)) {
-                    alert("ピクチャーインピクチャーはサポートされていません");
-                    return;
-                }
-                // ピクチャーインピクチャーに表示する要素を取得
-                const pipContent = document.querySelector("#pip");
-                // ピクチャーインピクチャーのウィンドウを作成
-                const pipWindow = await window.documentPictureInPicture.requestWindow({
-                    width: pipContent.clientWidth,
-                    height: pipContent.clientHeight
-                });
-                // ピクチャーインピクチャーの背景色を設定
-                pipBackground = window.getComputedStyle(pipContent).backgroundColor;
-                pipWindow.document.body.style.backgroundColor = pipBackground;
-                pipWindow.document.body.style.margin = "0";
-                // ピクチャーインピクチャーのウィンドウにコンテンツを追加
-                pipWindow.document.body.append(pipContent);
-                // ピクチャーインピクチャーのウィンドウが閉じられたときにコンテンツを元の位置に戻す
-                pipWindow.addEventListener("unload", (event) => {
-                    const container = document.querySelector("#container");
-                    const pipContent = event.target.querySelector("#pip");
-                    container.append(pipContent);
-                });
-                
-            });
-        </script>
+        <script src="/js/pipDigitalClock.js"></script>
     </div>
 </body>
 
