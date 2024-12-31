@@ -32,13 +32,37 @@ pipBtn.addEventListener("click", async function () {
     // ピクチャーインピクチャーの背景色を設定
     pipBackground = window.getComputedStyle(pipContent).backgroundColor;
     pipWindow.document.body.style.backgroundColor = pipBackground;
-    pipWindow.document.body.style.margin = "0";
+    //  元のウィンドウからすべてのスタイルシートをピクチャーインピクチャーに追加する。
+    [...document.styleSheets].forEach((styleSheet) => {
+        try {
+          const cssRules = [...styleSheet.cssRules].map((rule) => rule.cssText).join('');
+          const style = document.createElement('style');
+    
+          style.textContent = cssRules;
+          pipWindow.document.head.appendChild(style);
+        } catch (e) {
+          const link = document.createElement('link');
+    
+          link.rel = 'stylesheet';
+          link.type = styleSheet.type;
+          link.media = styleSheet.media;
+          link.href = styleSheet.href;
+          pipWindow.document.head.appendChild(link);
+        }
+    });
+    //  ピクチャーインピクチャーのボタン要素を非表示にする。
+    pipBtn.style.display = "none";
+    //  デジタル時計の要素を取得
+    const digitalClock = document.querySelector("#clock");
+    digitalClock.className = "pipClock";
     // ピクチャーインピクチャーのウィンドウにコンテンツを追加
     pipWindow.document.body.append(pipContent);
     // ピクチャーインピクチャーのウィンドウが閉じられたときにコンテンツを元の位置に戻す
     pipWindow.addEventListener("unload", (event) => {
         const container = document.querySelector("#container");
         const pipContent = event.target.querySelector("#pip");
+        digitalClock.className = "";
+        pipBtn.style.display = "block";
         container.append(pipContent);
     });        
 });
