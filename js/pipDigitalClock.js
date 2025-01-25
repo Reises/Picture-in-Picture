@@ -12,6 +12,26 @@ function displayTime() {
     //  現在時刻を文字列にして、ブラウザに表示
     clock.textContent = `${hour}:${minute}:${second}`;
 }
+
+function originalStyleAddPip(pipWindow) {
+    [...document.styleSheets].forEach((styleSheet) => {
+        try {
+          const cssRules = [...styleSheet.cssRules].map((rule) => rule.cssText).join('');
+          const style = document.createElement('style');
+    
+          style.textContent = cssRules;
+          pipWindow.document.head.appendChild(style);
+        } catch (e) {
+          const link = document.createElement('link');
+    
+          link.rel = 'stylesheet';
+          link.type = styleSheet.type;
+          link.media = styleSheet.media;
+          link.href = styleSheet.href;
+          pipWindow.document.head.appendChild(link);
+        }
+    });
+}
     
 displayTime();
 setInterval(displayTime, 1000);
@@ -32,24 +52,10 @@ pipBtn.addEventListener("click", async function () {
     // ピクチャーインピクチャーの背景色を設定
     pipBackground = window.getComputedStyle(pipContent).backgroundColor;
     pipWindow.document.body.style.backgroundColor = pipBackground;
+    
     //  元のウィンドウからすべてのスタイルシートをピクチャーインピクチャーに追加する。
-    [...document.styleSheets].forEach((styleSheet) => {
-        try {
-          const cssRules = [...styleSheet.cssRules].map((rule) => rule.cssText).join('');
-          const style = document.createElement('style');
-    
-          style.textContent = cssRules;
-          pipWindow.document.head.appendChild(style);
-        } catch (e) {
-          const link = document.createElement('link');
-    
-          link.rel = 'stylesheet';
-          link.type = styleSheet.type;
-          link.media = styleSheet.media;
-          link.href = styleSheet.href;
-          pipWindow.document.head.appendChild(link);
-        }
-    });
+    originalStyleAddPip(pipWindow)
+
     //  ピクチャーインピクチャーのボタン要素を非表示にする。
     pipBtn.style.display = "none";
     //  デジタル時計の要素を取得
