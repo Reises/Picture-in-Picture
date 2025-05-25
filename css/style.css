@@ -19,3 +19,22 @@ body #pip {
 body #pipBtn {
     display: block;
 }
+
+/* ボタン本体 */
+.btn {
+  display: inline-block;
+  padding: 0.8em 3em;
+  background-color: #1d1ac5; /* 背景色 */
+  box-shadow: 0 5px 0 #1d1ac5; /* 影の太さ・色 */
+  border-radius: 60px;
+  border-color: #fff;
+  color: #fff;
+  cursor: pointer;
+  text-decoration: none; /* 文字の下線を消す */
+}
+
+/* クリック時 */
+.btn:active {
+  box-shadow: none;
+  transform: translateY(5px);
+}
