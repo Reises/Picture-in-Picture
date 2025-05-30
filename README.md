@@ -1,4 +1,15 @@
 "# Picture-in-Picture" 
 videoタグ以外でのピクチャインピクチャーを実装しました。
-画面中央にデジタル時計が表示されており、ピクチャーインピクチャーで表示できます。
-videoタグ以外だからなのか別ウィンドウのような挙動になっていますが、仕様であるかと思われます。
+
+ディレクトリ構成
+project-root/
+├── index.html
+├── css/
+│    ├── pipSty;e.css
+│    └── style.css
+└── js/
+    ├── main.js
+    ├── clock.js
+    ├── pomodoro.js
+    ├── pip.js
+    └── state.js
